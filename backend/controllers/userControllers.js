@@ -1,3 +1,5 @@
+const User = require("../models/userModel")
+
 //Login users
 
 const loginUser = (req, res) => {
