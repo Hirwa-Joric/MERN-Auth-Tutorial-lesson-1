@@ -4,7 +4,6 @@ const  Joi = require("joi")
 
 
 const Schema = mongoose.Schema
-
 const userSchema = new Schema({
     email: {
         type: String,
@@ -16,7 +15,6 @@ const userSchema = new Schema({
                 required: true
     }
 })
-
 // user static method for signup user
 
 
@@ -46,16 +44,21 @@ userSchema.statics.signup = async function(email, password) {
 userSchema.statics.login = async function(email, password) {
   if (!email || !password) {
     throw Error('All fields must be filled')
+    
   }
   const user = await this.findOne({ email })
+
   if (!user) {
     throw Error('Incorrect email')
+
   }
   const match = await bcrypt.compare(password, user.password)
   if (!match) {
+
     throw Error('Incorrect password')
   }
+
   return user
-}g
+}
 
 module.exports = mongoose.model("User", userSchema)
