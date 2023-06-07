@@ -21,7 +21,7 @@ const signupUser = async (req, res) => {
     throw Error("all fields must be completed")
   }
   
-  const {error , value} = signupSchema.validate(email,password,{abortEarly:true})
+  const {error} = signupSchema.validate(email,password,{abortEarly:true})
 
   if (error) {
     throw Error(error)
