@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const bcrypt = require("bcrypt")
 
 const Schema = mongoose.Schema
 
@@ -13,24 +14,9 @@ const userSchema = new Schema({
                 required: true
     }
 })
-const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
 
-const Schema = mongoose.Schema
+// user static method for signup user
 
-const userSchema = new Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  password: {
-    type: String,
-    required: true
-  }
-})
-
-// static signup method
 userSchema.statics.signup = async function(email, password) {
 
   const exists = await this.findOne({ email })
@@ -46,15 +32,4 @@ userSchema.statics.signup = async function(email, password) {
 
   return user
 }
-
-module.exports = mongoose.model('User', userSchema)
-// user static method for signup user
-
-userSchema.static.signup = async (email, password){
-    const exists = await this.findOne({ email })
-    if (exitst) {
-        throw  Error("User already exists")
-    }
-}
-
 module.exports = mongoose.model("User", userSchema)
