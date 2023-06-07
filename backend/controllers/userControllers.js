@@ -1,5 +1,5 @@
 const User = require("../models/userModel")
-
+const jwt = require("jsonwebtoken")
 //Login users
 
 const loginUser = (req, res) => {

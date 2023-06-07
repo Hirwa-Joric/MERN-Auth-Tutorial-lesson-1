@@ -19,33 +19,34 @@ const userSchema = new Schema({
 
 // user static method for signup user
 
+
 userSchema.statics.signup = async function(email, password) {
 
-    const signupSchema = Joi.object({
+  const signupSchema = Joi.object({
     email: Joi.string().email().required(),
-    password: Joi.string().password().min(3).max(10).required()
-    })
-    if (!email || !password) { 
-    throw Error("all fields must be completed")
-    }
-  
-    const {error} = signupSchema.validate(email,password,{abortEarly:true})
+    password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9!@#$%^&*]{3,10}$')).required()
+  });
 
+  if (!email || !password) {
+    throw new Error("All fields must be completed");
+  }
+
+  const { error } = signupSchema.validate({ email, password }, { abortEarly: true });
   if (error) {
-    throw Error(error)
+    throw new Error(JSON.stringify(error.details));
   }
 
-  const exists = await this.findOne({ email })
-
+  const exists = await this.findOne({ email });
   if (exists) {
-    throw Error('Email already in use')
+    throw new Error('Email already in use');
   }
 
-  const salt = await bcrypt.genSalt(10)
-  const hash = await bcrypt.hash(password, salt)
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(password, salt);
 
-  const user = await this.create({ email, password: hash })
+  const user = await this.create({ email, password: hash });
 
-  return user
-}
+  return user;
+};
+
 module.exports = mongoose.model("User", userSchema)
